@@ -34,9 +34,6 @@
     badge.style.display = 'block';
   }
 
-  // Email pre-approval mailto link
-  const emailLink = document.getElementById('cta-email-preapproval');
-  emailLink.href = `mailto:${C.seller.email}?subject=Pre-Approval Letter – ${P.address}&body=Hello,%0A%0APlease find my pre-approval letter attached.%0A%0AThank you.`;
 
   // Seller contact sidebar
   document.getElementById('seller-email-display').textContent = C.seller.email;
@@ -241,14 +238,17 @@ const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lb-img');
 const lbCaption = document.getElementById('lb-caption');
 
+function showLightboxImage(src, alt, caption) {
+  lbImg.src = src;
+  lbImg.alt = alt;
+  lbCaption.textContent = caption;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 function openLightbox(index) {
   lbIndex = index;
   const item = gallery[index];
-  lbImg.src = item.src;
-  lbImg.alt = item.alt;
-  lbCaption.textContent = item.caption;
-  lb.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  showLightboxImage(item.src, item.alt, item.caption);
 }
 function closeLightbox() {
   lb.classList.remove('open');
@@ -260,6 +260,11 @@ function navLightbox(dir) {
 }
 
 document.addEventListener('click', e => {
+  const planItem = e.target.closest('.plan-lot-item');
+  if (planItem) {
+    showLightboxImage(planItem.dataset.lightboxSrc, planItem.dataset.lightboxAlt, planItem.dataset.lightboxCaption);
+    return;
+  }
   const item = e.target.closest('.gallery-item');
   if (item) { openLightbox(parseInt(item.dataset.index)); return; }
   if (e.target === lb) closeLightbox();
@@ -410,7 +415,7 @@ function gtag_event(action, params = {}) {
   try { window.gtag && window.gtag('event', action, params); } catch(_) {}
 }
 // Track CTA clicks
-['cta-showing','cta-info','cta-email-preapproval','cta-tour','nav-cta-btn'].forEach(id => {
+['cta-showing','cta-info','cta-tour','nav-cta-btn'].forEach(id => {
   document.getElementById(id)?.addEventListener('click', () => {
     gtag_event('cta_click', { event_category: 'engagement', event_label: id });
   });

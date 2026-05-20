@@ -28,14 +28,14 @@ const SITE_CONFIG = {
     lotSize:      "Fenced",
     yearBuilt:    "2024",
     garage:       "2-car attached",
-    style:        "Chatham plan",
+    style:        "Floor plan",
     county:       "Durham",
     subdivision:  "Umstead Grove",
     parcelId:     "[PARCEL ID PLACEHOLDER]",
     taxYear:      "2024",
     annualTaxes:  "[ANNUAL TAX AMOUNT]",           // e.g. "$5,840"
-    schoolDistrict: "",
-    elementarySchool: "",
+    schoolDistrict: "Durham Public Schools",
+    elementarySchool: "Easley Elementary nearby; buyers should verify assignment",
     middleSchool:    "",
     highSchool:      "",
     mlsDisclaimer: "This is a For Sale By Owner listing. No MLS number.",
@@ -58,24 +58,30 @@ const SITE_CONFIG = {
   // ─── HIGHLIGHTS ──────────────────────────────────────────────────────────────
   highlights: [
     { icon: "🛏️", title: "Main-Level Bedroom", desc: "A rare first-floor bedroom gives the home real flexibility for guests, multigenerational living, a quiet office, or anyone who wants fewer stairs in daily life." },
-    { icon: "🍳", title: "Gourmet Kitchen + Appliances", desc: "Slate cabinetry, ice white quartz countertops, stainless appliances, a large island, refrigerator, stove, washer, and dryer are all part of the package." },
-    { icon: "🌱", title: "2024 Energy-Efficient Build", desc: "Built in 2024 with energy-efficient features designed for lower utility costs, better comfort, improved indoor air quality, and peace of mind." },
+    { icon: "🍳", title: "Gourmet Kitchen + Appliances", desc: "Slate cabinetry, ice white quartz countertops, under-cabinet LED lighting, stainless appliances, a large island, refrigerator, stove, washer, and dryer are all part of the package." },
+    { icon: "🌱", title: "Spray Foam Insulation", desc: "Built with spray foam insulation for a tighter, more comfortable home than traditional fiberglass insulation, helping reduce drafts, air leakage, and energy waste." },
     { icon: "🌿", title: "Covered Patio & Private Yard", desc: "The covered patio has been enhanced with expanded outdoor living, screened coverage, and a full vinyl privacy fence." },
     { icon: "🏋️", title: "Finished Garage + Home Gym", desc: "The attached garage has been professionally finished and painted, and a dedicated home gym setup is included with the sale." },
-    { icon: "📍", title: "North Durham Convenience", desc: "Close to Publix at Latta Park, Costco, Eno River access, Duke, Downtown Durham, RTP, RDU, and the planned Target-anchored redevelopment at the former Northgate Mall." },
+    { icon: "🧺", title: "Functional Laundry + Drop Zone", desc: "Laundry has been upgraded with a utility sink, added wire storage, wood shelving, a hanging rack, and basket space. A garage-entry drop zone adds hooks, bench seating, and shoe storage for everyday organization." },
+    { icon: "🌀", title: "Remote-Control Ceiling Fans", desc: "Modern ceiling fans with remote controls are installed in the bedrooms, family room, and loft for comfort and easy day-to-day use." },
+    { icon: "📍", title: "School + North Durham Convenience", desc: "Close to Easley Elementary School (~1.1 mi / ~4 min), Publix at Latta Park, Costco, Eno River access, Duke, Downtown Durham, RTP, RDU, and the planned Target-anchored redevelopment at the former Northgate Mall." },
   ],
 
   ownerUpgrades: {
-    total: "$20,200",
+    total: "$26,600",
     items: [
       { label: "Full vinyl privacy fence", value: "$7,000" },
       { label: "Patio enclosure with rails", value: "$6,000" },
       { label: "Extended concrete patio", value: "$6,000" },
       { label: "Trash enclosure with concrete pad", value: "$1,200" },
+      { label: "Mesh gutter guards", value: "$3,000" },
+      { label: "Functional laundry with utility sink, hanging rack, and added storage", value: "$1,800" },
+      { label: "Modern remote-control ceiling fans in bedrooms, family room, and loft", value: "$900" },
+      { label: "Garage-entry drop zone with hooks, bench, and shoe storage", value: "$400" },
+      { label: "Under-cabinet LED lighting", value: "$300" },
     ],
     note: "Approximate seller-paid upgrade values; buyer should verify condition and scope during due diligence.",
   },
-
   // ─── SELLER CONCESSION (shown in hero & FAQ) ─────────────────────────────────
   marketComparison: {
     updated: "May 19, 2026",
@@ -88,7 +94,7 @@ const SITE_CONFIG = {
       sqft: "2,670",
       pricePerSqft: "$199",
       mainLevelBedroom: "Yes",
-      note: "Main-level bedroom, home gym, finished garage, extended patio, privacy fence, seller concession, and approximately $20,200 in owner upgrades.",
+      note: "Main-level bedroom, spray foam insulation, remote-control ceiling fans, functional laundry, home gym, finished garage, extended patio, privacy fence, seller concession, and approximately $26,600 in owner upgrades.",
     },
     comps: [
       {
@@ -122,7 +128,7 @@ const SITE_CONFIG = {
     takeaways: [
       "Priced around $199 per square foot while offering more space than two nearby active 2024 listings.",
       "Includes a rare main-level bedroom for guests, multigenerational needs, or a private office.",
-      "Includes approximately $20,200 in seller-paid outdoor and utility upgrades, plus a finished garage and included home gym.",
+      "Includes approximately $26,600 in seller-paid outdoor, kitchen, laundry, comfort, and organization upgrades, plus a finished garage and included home gym.",
     ],
     disclaimer: "Nearby listings and pricing change frequently. Buyer should verify current MLS details, measurements, and availability.",
   },
@@ -134,22 +140,25 @@ const SITE_CONFIG = {
 
   // ─── GALLERY ─────────────────────────────────────────────────────────────────
   gallery: [
-    { src: "images/9.jpg",  alt: "Exterior front view",          caption: "Craftsman exterior · 2-car garage" },
-    { src: "images/8.jpg",  alt: "Builder floor plan rendering",   caption: "Chatham plan · Builder rendering" },
-    { src: "images/7.jpg",  alt: "Gourmet kitchen with island",    caption: "Kitchen · Slate cabinets · Quartz island" },
-    { src: "images/5.jpg",  alt: "Upstairs loft / living area",    caption: "Upstairs loft · Open layout" },
-    { src: "images/6.jpg",  alt: "Owner's suite",                  caption: "Owner's suite · Tray ceiling" },
-    { src: "images/1.jpg",  alt: "Owner's bathroom",              caption: "Owner's bath · Double vanity · Walk-in shower" },
-    { src: "images/3.jpg",  alt: "Secondary bedroom",             caption: "Secondary bedroom · Natural light" },
-    { src: "images/2.jpg",  alt: "Secondary bedroom",             caption: "Secondary bedroom · Carpet flooring" },
-    { src: "images/4.jpg",  alt: "Secondary bedroom",             caption: "Secondary bedroom · 2-car views" },
+    { src: "images/exterior-front.jpg", alt: "Exterior front view", caption: "Craftsman exterior · 2-car garage" },
+    { src: "images/open-concept-kitchen-living.jpg", alt: "Open-concept kitchen and living area", caption: "Open-concept kitchen and living · Natural light" },
+    { src: "images/kitchen-island.jpg", alt: "Gourmet kitchen with island", caption: "Kitchen · Slate cabinets · Quartz island · LED under-cabinet lighting" },
+    { src: "images/dining-area-patio-view.jpg", alt: "Dining area with patio access", caption: "Dining area · Patio access · Tree views" },
+    { src: "images/home-office.jpg", alt: "Home office", caption: "Home office · Bright work-from-home space" },
+    { src: "images/main-level-bedroom.jpg", alt: "Main-level bedroom", caption: "Main-level bedroom · Flexible first-floor space" },
+    { src: "images/upstairs-loft.jpg", alt: "Upstairs loft", caption: "Upstairs loft · Flexible living space" },
+    { src: "images/owners-suite.jpg", alt: "Owner's suite", caption: "Owner's suite · Spacious retreat" },
+    { src: "images/owners-bathroom.jpg", alt: "Owner's bathroom", caption: "Owner's bath · Double vanity · Walk-in shower" },
+    { src: "images/bedroom-1.jpg", alt: "Bedroom 1", caption: "Bedroom 1 · Natural light" },
+    { src: "images/bedroom-2.jpg", alt: "Bedroom 2", caption: "Bedroom 2 · Carpet flooring" },
+    { src: "images/bedroom-3.jpg", alt: "Bedroom 3", caption: "Bedroom 3 · Secondary bedroom" },
+    { src: "images/builder-floor-plan-rendering.jpg", alt: "Builder floor plan rendering", caption: "Floor plan · Builder rendering" },
   ],
-
-  // ─── NEIGHBORHOOD ────────────────────────────────────────────────────────────
   neighborhood: {
-    description: "Umstead Grove is an intimate 50-home community surrounded by natural forests, with quick access to everyday shopping, outdoor escapes, Downtown Durham dining, Duke, RTP, RDU, and planned retail growth near the former Northgate Mall.",
+    description: "Umstead Grove is an intimate 50-home community surrounded by natural forests, with quick access to Easley Elementary School, everyday shopping, outdoor escapes, Downtown Durham dining, Duke, RTP, RDU, and planned retail growth near the former Northgate Mall.",
     nearbyPoints: [
       { name: "Publix at Latta Park",        distance: "~1 mi / ~3 min" },
+      { name: "Easley Elementary School",    distance: "~1.1 mi / ~4 min" },
       { name: "Costco",                      distance: "within ~7 mi / ~12 min" },
       { name: "Eno River State Park access", distance: "~4 mi / ~8 min" },
       { name: "Duke University & Hospital",  distance: "within ~7 mi / ~12 min" },
@@ -163,6 +172,8 @@ const SITE_CONFIG = {
     googleMapsEmbed: "https://www.google.com/maps?q=Umstead%20Grove%20Way%2C%20Durham%2C%20NC%2027712&output=embed",
     communityFacts: [
       { label: "Community", value: "Intimate 50-home neighborhood" },
+      { label: "Nearby elementary", value: "Easley Elementary (~1.1 mi / ~4 min)" },
+      { label: "School ranking", value: "Easley is one of the top-ranked elementary schools in Durham County; buyers should verify assignment and current rankings." },
       { label: "HOA", value: "CAMS – Community Association Management Services" },
       { label: "HOA dues", value: "$94/month" },
     ],
@@ -191,7 +202,7 @@ const SITE_CONFIG = {
     },
     {
       q: "What improvements have been made to the home?",
-      a: "The sellers have invested meaningfully in this home since purchase. Key upgrades include: a fully finished and freshly painted attached garage; a significantly extended back patio with a screened covered area; a full vinyl privacy fence enclosing the backyard; a purpose-built enclosed structure for garbage and recycling bins; and a dedicated home gym that conveys with the property. Total approximate upgrade value: $20,200."
+      a: "The sellers have invested meaningfully in this home since purchase. Key upgrades include: a fully finished and freshly painted attached garage; a significantly extended back patio with a screened covered area; a full vinyl privacy fence enclosing the backyard; a purpose-built enclosed structure for garbage and recycling bins; mesh gutter guards; under-cabinet LED kitchen lighting; spray foam insulation; a functional laundry setup with utility sink, hanging rack, and added storage; modern remote-control ceiling fans in the bedrooms, family room, and loft; a garage-entry drop zone; and a dedicated home gym that conveys with the property. Total approximate upgrade value: $26,600."
     },
     {
       q: "Does the home gym convey with the sale?",
@@ -242,9 +253,9 @@ const SITE_CONFIG = {
   // ─── SITE META ───────────────────────────────────────────────────────────────
   site: {
     title:       "Umstead Grove | $531,330 | Durham, NC | For Sale By Owner",
-    description: "Move-in ready home for sale by owner in Durham, NC. Seller offering $10,000 toward closing costs. Features include home gym, finished garage, screened patio, and vinyl privacy fence. Request a showing today.",
+    description: "Move-in ready home for sale by owner in Durham, NC. Seller offering $10,000 toward closing costs. Features include spray foam insulation, functional laundry with utility sink, remote-control ceiling fans, under-cabinet LED lighting, home gym, finished garage, screened patio, and vinyl privacy fence. Request a showing today.",
     url:         "https://umsteadgrove.com",
-    ogImage:     "https://umsteadgrove.com/images/9.jpg",
+    ogImage:     "https://umsteadgrove.com/images/exterior-front.jpg",
     themeColor:  "#1a3a2e",
     accentColor: "#c9a84c",
   },

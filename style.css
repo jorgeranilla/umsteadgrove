@@ -160,6 +160,17 @@ section { padding: 80px 0; }
 .gallery-disclaimer em { color: var(--green-mid); font-style: normal; font-weight: 600; }
 .gallery-disclaimer-cta { display: inline-block; margin-top: 6px; color: var(--coral); font-weight: 600; font-size: 0.83rem; letter-spacing: 0.02em; }
 
+
+/* PLAN / LOT */
+#plan-lot { background: var(--cream); padding-top: 0; }
+.plan-lot-header { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 28px; }
+.plan-lot-header .section-sub { max-width: 420px; }
+.plan-lot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.plan-lot-item { border: 0; padding: 0; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); cursor: pointer; text-align: left; position: relative; aspect-ratio: 4 / 3; }
+.plan-lot-item img { width: 100%; height: 100%; object-fit: contain; background: var(--white); display: block; transition: transform 0.45s ease; }
+.plan-lot-item:hover img { transform: scale(1.025); }
+.plan-lot-item span { position: absolute; left: 14px; bottom: 14px; background: rgba(26,58,46,0.9); color: var(--white); border-radius: 999px; padding: 7px 13px; font-size: 0.82rem; font-weight: 700; }
+@media(max-width:768px) { .plan-lot-header { align-items: start; flex-direction: column; } .plan-lot-grid { grid-template-columns: 1fr; } }
 /* MARKET CONTEXT */
 #market-context { background: var(--white); }
 .market-header { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 16px; }
