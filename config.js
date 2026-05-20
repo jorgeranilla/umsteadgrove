@@ -152,7 +152,6 @@ const SITE_CONFIG = {
     { src: "images/bedroom-1.jpg", alt: "Bedroom 1", caption: "Bedroom 1 · Natural light" },
     { src: "images/bedroom-2.jpg", alt: "Bedroom 2", caption: "Bedroom 2 · Carpet flooring" },
     { src: "images/bedroom-3.jpg", alt: "Bedroom 3", caption: "Bedroom 3 · Secondary bedroom" },
-    { src: "images/builder-floor-plan-rendering.jpg", alt: "Builder floor plan rendering", caption: "Floor plan · Builder rendering" },
   ],
   neighborhood: {
     description: "Umstead Grove is an intimate 50-home community surrounded by natural forests, with quick access to Easley Elementary School, everyday shopping, outdoor escapes, Downtown Durham dining, Duke, RTP, RDU, and planned retail growth near the former Northgate Mall.",

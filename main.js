@@ -202,14 +202,25 @@
 
 /* ─── NAV ───────────────────────────────────────────────────────────────────── */
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
+function syncNavChrome() {
   nav.classList.toggle('scrolled', window.scrollY > 60);
-}, { passive: true });
+}
+syncNavChrome();
+window.addEventListener('scroll', syncNavChrome, { passive: true });
 
 const hamburger = document.getElementById('hamburger');
 const navMobile = document.getElementById('nav-mobile');
-hamburger.addEventListener('click', () => navMobile.classList.toggle('open'));
-navMobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navMobile.classList.remove('open')));
+function setMobileMenu(open) {
+  navMobile.classList.toggle('open', open);
+  nav.classList.toggle('menu-open', open);
+  hamburger.setAttribute('aria-expanded', String(open));
+}
+hamburger.setAttribute('aria-expanded', 'false');
+hamburger.addEventListener('click', () => setMobileMenu(!navMobile.classList.contains('open')));
+navMobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMobileMenu(false)));
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) setMobileMenu(false);
+}, { passive: true });
 
 /* ─── FAQ ACCORDION ─────────────────────────────────────────────────────────── */
 document.addEventListener('click', e => {
