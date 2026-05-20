@@ -1,4 +1,4 @@
-﻿# Umstead Grove â€” FSBO Property Website
+# Umstead Grove â€” FSBO Property Website
 
 A professional For Sale By Owner real estate landing page for a home in Durham, NC, built on Firebase Hosting + Firebase Functions + Firestore + Firebase Storage.
 
@@ -64,7 +64,7 @@ firebase functions:secrets:set UG_SMTP_PORT
 firebase functions:secrets:set UG_SMTP_USER
 firebase functions:secrets:set UG_SMTP_PASS
 firebase functions:secrets:set UG_SELLER_EMAIL
-firebase functions:secrets:set UG_ADMIN_PASSWORD
+firebase functions:secrets:set UG_ADMIN_EMAILS
 ```
 
 **Gmail tip**: Use a [Gmail App Password](https://support.google.com/accounts/answer/185833) â€” not your regular Gmail password. Enable 2FA on your account first.
@@ -134,7 +134,7 @@ Each document contains:
 
 Visit: `https://umsteadgrove.com/admin.html`
 
-> **Note:** The admin panel reads from `/api/umsteadgrove/leads` which requires the `UG_ADMIN_PASSWORD` bearer token. 
+> **Note:** The admin panel uses Firebase Google Authentication. The backend only accepts signed-in Google accounts listed in `UG_ADMIN_EMAILS`. 
 > To access it properly, you'll need to add auth headers. For a simpler workflow, use the Firebase Console directly.
 
 **Quick lead management via Firebase Console:**
@@ -188,7 +188,7 @@ Only leads who checked "I consent to receive updates" receive these emails.
 - Form includes honeypot spam protection (`_honey` field)
 - File uploads validated server-side: only PDF/JPG/PNG under 10MB accepted
 - No SSNs, bank accounts, or tax return data is collected or requested
-- Admin panel API protected by a bearer token secret
+- Admin panel API protected by Firebase Google Auth and the `UG_ADMIN_EMAILS` allowlist
 
 ---
 
