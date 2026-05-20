@@ -15,7 +15,7 @@ const SITE_CONFIG = {
 
   // ─── PROPERTY ────────────────────────────────────────────────────────────────
   property: {
-    address:      "Umstead Grove",
+    address:      "1008 Umstead Grove Way",
     city:         "Durham",
     state:        "NC",
     zip:          "27712",
@@ -169,11 +169,11 @@ const SITE_CONFIG = {
     walkScore:    "[XX]",
     transitScore: "[XX]",
     bikeScore:    "[XX]",
-    googleMapsEmbed: "https://www.google.com/maps?q=Umstead%20Grove%20Way%2C%20Durham%2C%20NC%2027712&output=embed",
+    googleMapsEmbed: "https://www.google.com/maps?q=1008%20Umstead%20Grove%20Way%2C%20Durham%2C%20NC%2027712&output=embed",
     communityFacts: [
       { label: "Community", value: "Intimate 50-home neighborhood" },
       { label: "Nearby elementary", value: "Easley Elementary (~1.1 mi / ~4 min)" },
-      { label: "School ranking", value: "Easley is one of the top-ranked elementary schools in Durham County; buyers should verify assignment and current rankings." },
+      { label: "School ranking", value: "Easley is one of the top-ranked elementary schools in Durham County; buyers should verify current rankings." },
       { label: "HOA", value: "CAMS – Community Association Management Services" },
       { label: "HOA dues", value: "$94/month" },
     ],
@@ -202,7 +202,7 @@ const SITE_CONFIG = {
     },
     {
       q: "What improvements have been made to the home?",
-      a: "The sellers have invested meaningfully in this home since purchase. Key upgrades include: a fully finished and freshly painted attached garage; a significantly extended back patio with a screened covered area; a full vinyl privacy fence enclosing the backyard; a purpose-built enclosed structure for garbage and recycling bins; mesh gutter guards; under-cabinet LED kitchen lighting; spray foam insulation; a functional laundry setup with utility sink, hanging rack, and added storage; modern remote-control ceiling fans in the bedrooms, family room, and loft; a garage-entry drop zone; and a dedicated home gym that conveys with the property. Total approximate upgrade value: $26,600."
+      a: "The sellers have invested meaningfully in this home since purchase. Key upgrades include: a fully finished and freshly painted attached garage; a significantly extended back patio with a screened covered area; a full vinyl privacy fence enclosing the backyard; a purpose-built enclosed structure for garbage and recycling bins; mesh gutter guards; under-cabinet LED kitchen lighting; a functional laundry setup with utility sink, hanging rack, and added storage; modern remote-control ceiling fans in the bedrooms, family room, and loft; a garage-entry drop zone; and a dedicated home gym that conveys with the property. Total approximate upgrade value: $26,600."
     },
     {
       q: "Does the home gym convey with the sale?",
@@ -238,7 +238,7 @@ const SITE_CONFIG = {
     },
     {
       q: "When is the seller hoping to close?",
-      a: "A 30–45 day close is preferred, but the seller is flexible and open to negotiation based on the buyer's needs and lender timeline."
+      a: "A 30–45 day close is preferred, but the seller is very flexible. If a buyer wishes to choose a longer closing period to lock in the best possible interest rate for their home, we are more than happy to accommodate and adjust the closing date accordingly."
     },
   ],
 
