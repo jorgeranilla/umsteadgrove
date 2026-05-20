@@ -1,49 +1,49 @@
-# Umstead Grove — FSBO Property Website
+﻿# Umstead Grove â€” FSBO Property Website
 
 A professional For Sale By Owner real estate landing page for a home in Durham, NC, built on Firebase Hosting + Firebase Functions + Firestore + Firebase Storage.
 
 ---
 
-## 📁 File Structure
+## ðŸ“ File Structure
 
 ```
 umsteadgrove/
-  index.html      — Main property page (hero, gallery, form, FAQ, disclosures)
-  admin.html      — Lead management dashboard (password-protected via API)
-  style.css       — All styles
-  main.js         — Frontend logic (form, gallery, config rendering)
-  config.js       — ← EDIT THIS FIRST — all property details, prices, copy
-  hero_bg.png     — Replace with your own hero background photo
-  house.png       — Replace with your own property exterior photo
-  kitchen.png     — Replace with your interior photos
+  index.html      â€” Main property page (hero, gallery, form, FAQ, disclosures)
+  admin.html      â€” Lead management dashboard (password-protected via API)
+  style.css       â€” All styles
+  main.js         â€” Frontend logic (form, gallery, config rendering)
+  config.js       â€” â† EDIT THIS FIRST â€” all property details, prices, copy
+  hero_bg.png     â€” Replace with your own hero background photo
+  house.png       â€” Replace with your own property exterior photo
+  kitchen.png     â€” Replace with your interior photos
   living_room.png
   bedroom.png
   bathroom.png
   backyard.png
 
 functions/
-  index.js            — Main Firebase Functions entry (Nest cam + FSBO exports)
-  umsteadgrove.js     — All FSBO API endpoints + email templates
-  .env.fsbo.example   — Secret key template
+  index.js            â€” Main Firebase Functions entry (Nest cam + FSBO exports)
+  umsteadgrove.js     â€” All FSBO API endpoints + email templates
+  .env.fsbo.example   â€” Secret key template
 ```
 
 ---
 
-## 🚀 Setup Instructions
+## ðŸš€ Setup Instructions
 
 ### 1. Fill in Property Details
 
 Edit `umsteadgrove/config.js` and replace all `[PLACEHOLDER]` values:
 
 - `property.address`, `price`, `beds`, `baths`, `sqft`, `lotSize`, `yearBuilt`
-- `seller.email` — **critical**: this is where lead notifications will be sent
+- `seller.email` â€” **critical**: this is where lead notifications will be sent
 - `hoa` section with your actual HOA info
 - `faq` answers specific to your property
-- `gallery` — replace placeholder photos with real photos
+- `gallery` â€” replace placeholder photos with real photos
 
 ### 2. Replace Placeholder Photos
 
-Drop your actual property photos into `umsteadgrove/` and update `config.js → gallery[]`:
+Drop your actual property photos into `umsteadgrove/` and update `config.js â†’ gallery[]`:
 
 ```js
 gallery: [
@@ -52,11 +52,11 @@ gallery: [
 ]
 ```
 
-Photos can be JPG or PNG. Recommended minimum: 1200×800px.
+Photos can be JPG or PNG. Recommended minimum: 1200Ã—800px.
 
 ### 3. Set Firebase Secrets
 
-Run these commands from the project root (requires Firebase CLI):
+Run these commands from `C:\Projects\jorgeranilla.com` (requires Firebase CLI), because the shared Functions source lives there:
 
 ```bash
 firebase functions:secrets:set UG_SMTP_HOST
@@ -67,14 +67,14 @@ firebase functions:secrets:set UG_SELLER_EMAIL
 firebase functions:secrets:set UG_ADMIN_PASSWORD
 ```
 
-**Gmail tip**: Use a [Gmail App Password](https://support.google.com/accounts/answer/185833) — not your regular Gmail password. Enable 2FA on your account first.
+**Gmail tip**: Use a [Gmail App Password](https://support.google.com/accounts/answer/185833) â€” not your regular Gmail password. Enable 2FA on your account first.
 
 **SendGrid alternative**: Set `UG_SMTP_HOST=smtp.sendgrid.net`, `UG_SMTP_PORT=587`, `UG_SMTP_USER=apikey`, `UG_SMTP_PASS=your-sendgrid-api-key`.
 
 ### 4. Install Function Dependencies
 
 ```bash
-cd functions
+cd C:\Projects\jorgeranilla.com\functions
 npm install
 ```
 
@@ -82,18 +82,21 @@ npm install
 
 ```bash
 # From project root
-firebase deploy --only hosting,functions
+firebase deploy --only hosting:umsteadgrove
 ```
 
 Or deploy individually:
 ```bash
-firebase deploy --only hosting
+# From C:\Projects\umsteadgrove.com
+firebase deploy --only hosting:umsteadgrove
+
+# From C:\Projects\jorgeranilla.com, because functions live there
 firebase deploy --only functions:umsteadgroveSubmit,functions:umsteadgroveLeads,functions:umsteadgroveUpdateLead,functions:umsteadgroveDownload,functions:umsteadgroveSendUpdate
 ```
 
 ---
 
-## 🗄️ Database Schema
+## ðŸ—„ï¸ Database Schema
 
 **Firestore Collection:** `umsteadgrove_leads`
 
@@ -125,31 +128,31 @@ Each document contains:
 
 ---
 
-## 📋 Managing Leads
+## ðŸ“‹ Managing Leads
 
 ### Admin Panel
 
-Visit: `https://jorgeranilla.com/umsteadgrove/admin.html`
+Visit: `https://umsteadgrove.com/admin.html`
 
 > **Note:** The admin panel reads from `/api/umsteadgrove/leads` which requires the `UG_ADMIN_PASSWORD` bearer token. 
 > To access it properly, you'll need to add auth headers. For a simpler workflow, use the Firebase Console directly.
 
 **Quick lead management via Firebase Console:**
-1. Go to [Firebase Console](https://console.firebase.google.com) → `jorgeranilla-site`
+1. Go to [Firebase Console](https://console.firebase.google.com) â†’ `jorgeranilla-site`
 2. Click **Firestore Database**
 3. Navigate to `umsteadgrove_leads`
 4. Click any document to view details and edit `leadStatus` / `notes`
 
 ### Export Leads to CSV
 
-From `admin.html`, click **⬇ Export CSV**. This exports all currently-filtered leads to a CSV file.
+From `admin.html`, click **â¬‡ Export CSV**. This exports all currently-filtered leads to a CSV file.
 
 You can also export from Firebase Console:
-1. Firestore → `umsteadgrove_leads` → click ⋮ menu → **Export collection**
+1. Firestore â†’ `umsteadgrove_leads` â†’ click â‹® menu â†’ **Export collection**
 
 ---
 
-## 📧 Sending Bulk Email Updates
+## ðŸ“§ Sending Bulk Email Updates
 
 Use the Firebase Functions REST API or create a simple admin script:
 
@@ -169,16 +172,16 @@ fetch('https://us-central1-jorgeranilla-site.cloudfunctions.net/umsteadgroveSend
 ```
 
 **Email types:**
-- `price_update` — payload: `{ newPrice, note }`
-- `open_house` — payload: `{ date, time, address }`
-- `follow_up` — no payload needed
-- `showing_confirm` — payload: `{ confirmedDateTime }`
+- `price_update` â€” payload: `{ newPrice, note }`
+- `open_house` â€” payload: `{ date, time, address }`
+- `follow_up` â€” no payload needed
+- `showing_confirm` â€” payload: `{ confirmedDateTime }`
 
 Only leads who checked "I consent to receive updates" receive these emails.
 
 ---
 
-## 🔒 Security Notes
+## ðŸ”’ Security Notes
 
 - Uploaded pre-approval letters go to Firebase Storage and are **never publicly accessible**
 - Downloads require admin authentication and return a 15-minute signed URL
@@ -189,7 +192,7 @@ Only leads who checked "I consent to receive updates" receive these emails.
 
 ---
 
-## ⚖️ Legal & Compliance
+## âš–ï¸ Legal & Compliance
 
 - Fair Housing language is included on the main page and in all emails
 - Privacy notice explains data use is limited to property sale communications
@@ -200,28 +203,28 @@ Only leads who checked "I consent to receive updates" receive these emails.
 
 ---
 
-## 🛠️ Customization
+## ðŸ› ï¸ Customization
 
 All site copy lives in `umsteadgrove/config.js`. To update:
 
 | What to change | Where |
 |---|---|
-| Price | `config.js → property.price` |
-| Photos | Replace files + update `config.js → gallery[]` |
-| Highlights | `config.js → highlights[]` |
-| FAQ | `config.js → faq[]` |
-| HOA info | `config.js → hoa` |
-| Seller email | `config.js → seller.email` + Firebase secret `UG_SELLER_EMAIL` |
-| Nearby points | `config.js → neighborhood.nearbyPoints[]` |
-| Google Maps embed | `config.js → neighborhood.googleMapsEmbed` |
+| Price | `config.js â†’ property.price` |
+| Photos | Replace files + update `config.js â†’ gallery[]` |
+| Highlights | `config.js â†’ highlights[]` |
+| FAQ | `config.js â†’ faq[]` |
+| HOA info | `config.js â†’ hoa` |
+| Seller email | `config.js â†’ seller.email` + Firebase secret `UG_SELLER_EMAIL` |
+| Nearby points | `config.js â†’ neighborhood.nearbyPoints[]` |
+| Google Maps embed | `config.js â†’ neighborhood.googleMapsEmbed` |
 
 ---
 
-## 📊 Analytics
+## ðŸ“Š Analytics
 
 The site fires `gtag` events for:
-- `cta_click` — all CTA button clicks
-- `form_submit` — buyer form submission
+- `cta_click` â€” all CTA button clicks
+- `form_submit` â€” buyer form submission
 
 Add your Google Analytics 4 tag to `index.html` `<head>` to enable tracking:
 
@@ -234,3 +237,7 @@ Add your Google Analytics 4 tag to `index.html` `<head>` to enable tracking:
   gtag('config', 'G-XXXXXXXXXX');
 </script>
 ```
+
+
+
+
