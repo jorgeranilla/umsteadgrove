@@ -51,9 +51,16 @@
     .consent-tag { display: inline-block; background: #e8f5e9; color: #2e7d32; font-size: 0.7rem; padding: 2px 8px; border-radius: 50px; font-weight: 600; }
     .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
     .empty-state p { margin-top: 8px; font-size: 0.9rem; }
+    .auth-panel { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 28px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .auth-panel h2 { color: var(--green-dark); margin-bottom: 6px; }
+    .auth-panel p { color: var(--text-mid); font-size: 0.95rem; margin: 0; }
+    .auth-user { color: rgba(255,255,255,0.78); font-size: 0.85rem; align-self: center; }
     @media(max-width:768px) { .modal-grid { grid-template-columns: 1fr; } }
   </style>
   <script src="config.js"></script>
+  <script src="/__/firebase/10.12.4/firebase-app-compat.js"></script>
+  <script src="/__/firebase/10.12.4/firebase-auth-compat.js"></script>
+  <script src="/__/firebase/init.js"></script>
 </head>
 <body>
 
@@ -65,7 +72,9 @@
         <p id="admin-address-sub">Umstead Grove · Durham, NC</p>
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" id="export-csv-btn">⬇ Export CSV</button>
+        <span class="auth-user" id="auth-user"></span>
+        <button class="btn btn-outline btn-sm" id="sign-out-btn" style="display:none">Sign Out</button>
+        <button class="btn btn-primary btn-sm" id="export-csv-btn" disabled>Export CSV</button>
         <a href="index.html" class="btn btn-outline btn-sm">← View Property Site</a>
       </div>
     </div>
@@ -74,6 +83,15 @@
 
 <div class="container" style="padding-top:24px;padding-bottom:48px">
 
+  <div class="auth-panel" id="auth-panel">
+    <div>
+      <h2 class="serif">Admin Access</h2>
+      <p>Sign in with an approved Google account to manage Umstead Grove leads.</p>
+    </div>
+    <button class="btn btn-green btn-sm" id="google-sign-in-btn">Sign in with Google</button>
+  </div>
+
+  <div id="admin-content" style="display:none">
   <!-- Stats -->
   <div class="stat-cards" id="stat-cards">
     <div class="stat-card"><div class="num" id="stat-total">—</div><div class="lbl">Total Leads</div></div>
@@ -131,6 +149,7 @@
       <p style="margin-top:8px;font-size:0.8rem">Make sure the backend Firebase Function is deployed and receiving submissions.</p>
     </div>
   </div>
+  </div>
 </div>
 
 <!-- LEAD DETAIL MODAL -->
@@ -168,28 +187,62 @@ let allLeads = [];
 let currentLeadId = null;
 
 // ─── AUTH ─────────────────────────────────────────────────────────────────────
-function getPassword() {
-  let pwd = sessionStorage.getItem('ug_admin_pwd');
-  if (!pwd) {
-    pwd = prompt('Admin password:');
-    if (pwd) sessionStorage.setItem('ug_admin_pwd', pwd.trim());
+let auth = null;
+let currentUser = null;
+
+function renderAuthState() {
+  const signedIn = Boolean(currentUser);
+  document.getElementById('auth-panel').style.display = signedIn ? 'none' : 'flex';
+  document.getElementById('admin-content').style.display = signedIn ? '' : 'none';
+  document.getElementById('sign-out-btn').style.display = signedIn ? '' : 'none';
+  document.getElementById('export-csv-btn').disabled = !signedIn;
+  document.getElementById('auth-user').textContent = signedIn ? currentUser.email : '';
+}
+
+function clearLeads() {
+  allLeads = [];
+  renderTable(allLeads);
+  renderStats(allLeads);
+}
+
+async function signInWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  await auth.signInWithPopup(provider);
+}
+
+async function signOutAdmin() {
+  await auth.signOut();
+}
+
+async function authHeaders(extra = {}) {
+  if (!currentUser) throw new Error('Sign in required.');
+  const token = await currentUser.getIdToken();
+  return { 'Authorization': `Bearer ${token}`, ...extra };
+}
+
+async function handleUnauthorized() {
+  await signOutAdmin().catch(() => {});
+  showToast('This Google account is not allowed to access the admin panel.', 'error');
+}
+
+function initAuth() {
+  if (!window.firebase || !firebase.apps.length) {
+    showToast('Firebase Auth could not initialize. Deploy through Firebase Hosting and try again.', 'error');
+    return;
   }
-  return pwd ? pwd.trim() : '';
+  auth = firebase.auth();
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    renderAuthState();
+    if (user) fetchLeads();
+    else clearLeads();
+  });
 }
-
-function authHeaders(extra = {}) {
-  return { 'Authorization': `Bearer ${getPassword()}`, ...extra };
-}
-
-function handleUnauthorized() {
-  sessionStorage.removeItem('ug_admin_pwd');
-  showToast('Wrong password. Refresh the page to try again.', 'error');
-}
-
 // ─── FETCH LEADS ─────────────────────────────────────────────────────────────
 async function fetchLeads() {
   try {
-    const res = await fetch('/api/umsteadgrove/leads', { headers: authHeaders() });
+    const res = await fetch('/api/umsteadgrove/leads', { headers: await authHeaders() });
     if (res.status === 401) { handleUnauthorized(); return; }
     if (!res.ok) throw new Error('Could not fetch leads.');
     const json = await res.json();
@@ -197,10 +250,8 @@ async function fetchLeads() {
     renderTable(allLeads);
     renderStats(allLeads);
   } catch (err) {
-    allLeads = getSampleLeads();
-    renderTable(allLeads);
-    renderStats(allLeads);
-    showToast('Demo mode — backend not connected or password wrong.', 'error');
+    clearLeads();
+    showToast('Could not load leads. Confirm Functions are deployed and your account is allowed.', 'error');
   }
 }
 
@@ -249,7 +300,7 @@ function renderTable(leads) {
 async function downloadFile(id) {
   try {
     showToast('Preparing download…');
-    const res = await fetch(`/api/umsteadgrove/download?id=${id}`, { headers: authHeaders() });
+    const res = await fetch(`/api/umsteadgrove/download?id=${id}`, { headers: await authHeaders() });
     if (res.status === 401) { handleUnauthorized(); return; }
     if (!res.ok) { showToast('No file found for this lead.', 'error'); return; }
     const blob = await res.blob();
@@ -322,7 +373,7 @@ document.getElementById('save-lead-btn').addEventListener('click', async () => {
   try {
     const res = await fetch(`/api/umsteadgrove/leads?id=${currentLeadId}`, {
       method: 'PATCH',
-      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      headers: await authHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ leadStatus: status, notes }),
     });
     if (res.status === 401) { handleUnauthorized(); return; }
@@ -391,8 +442,9 @@ function showToast(msg, type='success') {
 }
 
 // ─── START ────────────────────────────────────────────────────────────────────
-getPassword(); // prompt for password immediately on page load
-fetchLeads();
+document.getElementById('google-sign-in-btn').addEventListener('click', () => signInWithGoogle().catch(() => showToast('Google sign-in was cancelled or failed.', 'error')));
+document.getElementById('sign-out-btn').addEventListener('click', signOutAdmin);
+initAuth();
 </script>
 </body>
 </html>
