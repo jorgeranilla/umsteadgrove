@@ -183,11 +183,11 @@ const SITE_CONFIG = {
   faq: [
     {
       q: "Is the seller offering closing cost assistance?",
-      a: "Yes — the seller is offering $10,000 toward the buyer's closing costs as part of the purchase agreement. The buyer has full flexibility in how those funds are applied at settlement, which may include buyer's agent compensation if the buyer has chosen to work with a buyer's agent. Specific terms are subject to negotiation in the purchase contract."
+      a: "The seller is including $10,000 toward the buyer's closing costs as part of the purchase agreement — a straightforward way to reduce what you bring to the table at closing."
     },
     {
-      q: "Can I use a buyer's agent, and who pays them?",
-      a: "Buyer's agents are welcome. Since the August 2024 NAR settlement, buyer's agent compensation is negotiated separately between you and your agent. The seller's $10,000 concession toward closing costs gives you real flexibility — buyers who have agreed to pay their agent can apply part or all of the concession toward that fee. Unrepresented buyers can apply the full $10,000 toward other closing costs. Either way, you benefit."
+      q: "Can I work with a buyer's agent?",
+      a: "Absolutely — buyer's agents are welcome. Agents interested in scheduling a showing are invited to reach out to the seller directly to discuss terms. We're happy to work with your representation."
     },
     {
       q: "What improvements have been made to the home?",
@@ -199,7 +199,7 @@ const SITE_CONFIG = {
     },
     {
       q: "Is this home listed on the MLS?",
-      a: "No. This is a direct For Sale By Owner listing. There is no MLS number. Buyer's agents are welcome and the $10,000 seller concession can be applied toward their compensation."
+      a: "No — this is a direct For Sale By Owner listing. Buyer's agents are welcome. Reach out to the seller to discuss co-op terms."
     },
     {
       q: "Can I request a showing?",
@@ -241,10 +241,10 @@ const SITE_CONFIG = {
 
   // ─── SITE META ───────────────────────────────────────────────────────────────
   site: {
-    title:       "Umstead Grove | $549,900 | Durham, NC | For Sale By Owner",
+    title:       "Umstead Grove | $531,330 | Durham, NC | For Sale By Owner",
     description: "Move-in ready home for sale by owner in Durham, NC. Seller offering $10,000 toward closing costs. Features include home gym, finished garage, screened patio, and vinyl privacy fence. Request a showing today.",
-    url:         "https://jorgeranilla.com/umsteadgrove",
-    ogImage:     "https://jorgeranilla.com/umsteadgrove/images/9.jpg",
+    url:         "https://umsteadgrove.com",
+    ogImage:     "https://umsteadgrove.com/images/9.jpg",
     themeColor:  "#1a3a2e",
     accentColor: "#c9a84c",
   },

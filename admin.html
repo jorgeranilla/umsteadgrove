@@ -167,21 +167,40 @@ document.getElementById('admin-address-sub').textContent =
 let allLeads = [];
 let currentLeadId = null;
 
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function getPassword() {
+  let pwd = sessionStorage.getItem('ug_admin_pwd');
+  if (!pwd) {
+    pwd = prompt('Admin password:');
+    if (pwd) sessionStorage.setItem('ug_admin_pwd', pwd.trim());
+  }
+  return pwd ? pwd.trim() : '';
+}
+
+function authHeaders(extra = {}) {
+  return { 'Authorization': `Bearer ${getPassword()}`, ...extra };
+}
+
+function handleUnauthorized() {
+  sessionStorage.removeItem('ug_admin_pwd');
+  showToast('Wrong password. Refresh the page to try again.', 'error');
+}
+
 // ─── FETCH LEADS ─────────────────────────────────────────────────────────────
 async function fetchLeads() {
   try {
-    const res = await fetch('/api/umsteadgrove/leads');
+    const res = await fetch('/api/umsteadgrove/leads', { headers: authHeaders() });
+    if (res.status === 401) { handleUnauthorized(); return; }
     if (!res.ok) throw new Error('Could not fetch leads.');
     const json = await res.json();
     allLeads = json.leads || [];
     renderTable(allLeads);
     renderStats(allLeads);
   } catch (err) {
-    // Demo mode: show sample data so seller can preview the UI
     allLeads = getSampleLeads();
     renderTable(allLeads);
     renderStats(allLeads);
-    showToast('Demo mode: backend not connected. Deploy Firebase Functions to see real leads.', 'error');
+    showToast('Demo mode — backend not connected or password wrong.', 'error');
   }
 }
 
@@ -220,10 +239,32 @@ function renderTable(leads) {
       <td style="white-space:nowrap;font-size:0.8rem">${new Date(l.dateSubmitted).toLocaleDateString()}</td>
       <td><div class="actions-cell">
         <button class="btn btn-primary btn-xs" onclick="openModal('${l.id}')">View</button>
-        ${l.hasUpload?`<a href="/api/umsteadgrove/download/${l.id}" class="btn btn-outline-green btn-xs" target="_blank">📄</a>`:''}
+        ${l.hasUpload ? `<button class="btn btn-outline-green btn-xs" onclick="downloadFile('${l.id}')" title="Download pre-approval">📄</button>` : ''}
       </div></td>
     </tr>
   `).join('');
+}
+
+// ─── DOWNLOAD (auth-gated via fetch) ─────────────────────────────────────────
+async function downloadFile(id) {
+  try {
+    showToast('Preparing download…');
+    const res = await fetch(`/api/umsteadgrove/download?id=${id}`, { headers: authHeaders() });
+    if (res.status === 401) { handleUnauthorized(); return; }
+    if (!res.ok) { showToast('No file found for this lead.', 'error'); return; }
+    const blob = await res.blob();
+    const url  = URL.createObjectURL(blob);
+    const a    = Object.assign(document.createElement('a'), {
+      href: url, download: `preapproval_${id}`, target: '_blank'
+    });
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    showToast('✅ Download started.');
+  } catch {
+    showToast('Download failed.', 'error');
+  }
 }
 
 // ─── STATS ────────────────────────────────────────────────────────────────────
@@ -262,25 +303,29 @@ function openModal(id) {
   document.getElementById('detail-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+
 function closeModal() {
   document.getElementById('detail-modal').classList.remove('open');
   document.body.style.overflow = '';
   currentLeadId = null;
 }
 document.getElementById('modal-close-btn').addEventListener('click', closeModal);
-document.getElementById('detail-modal').addEventListener('click', e => { if (e.target===document.getElementById('detail-modal')) closeModal(); });
+document.getElementById('detail-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('detail-modal')) closeModal();
+});
 
-// ─── SAVE LEAD ───────────────────────────────────────────────────────────────
+// ─── SAVE LEAD ────────────────────────────────────────────────────────────────
 document.getElementById('save-lead-btn').addEventListener('click', async () => {
   if (!currentLeadId) return;
   const status = document.getElementById('modal-status').value;
   const notes  = document.getElementById('modal-notes').value;
   try {
-    const res = await fetch(`/api/umsteadgrove/leads/${currentLeadId}`, {
+    const res = await fetch(`/api/umsteadgrove/leads?id=${currentLeadId}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ leadStatus: status, notes }),
     });
+    if (res.status === 401) { handleUnauthorized(); return; }
     if (!res.ok) throw new Error('Save failed.');
     const lead = allLeads.find(l => l.id === currentLeadId);
     if (lead) { lead.leadStatus = status; lead.notes = notes; }
@@ -289,8 +334,7 @@ document.getElementById('save-lead-btn').addEventListener('click', async () => {
     closeModal();
     showToast('✅ Lead updated.');
   } catch {
-    showToast('Could not save — demo mode or network error.', 'error');
-    // Update local only in demo mode
+    showToast('Could not save — check your connection.', 'error');
     const lead = allLeads.find(l => l.id === currentLeadId);
     if (lead) { lead.leadStatus = status; lead.notes = notes; }
     renderTable(filterLeads()); renderStats(allLeads); closeModal();
@@ -299,11 +343,11 @@ document.getElementById('save-lead-btn').addEventListener('click', async () => {
 
 // ─── SEARCH & FILTER ─────────────────────────────────────────────────────────
 function filterLeads() {
-  const q = document.getElementById('search-input').value.toLowerCase();
+  const q  = document.getElementById('search-input').value.toLowerCase();
   const st = document.getElementById('filter-status').value;
   const pa = document.getElementById('filter-preapproval').value;
   return allLeads.filter(l => {
-    const matchQ = !q || [l.fullName,l.email,l.phone].some(v => v?.toLowerCase().includes(q));
+    const matchQ  = !q  || [l.fullName,l.email,l.phone].some(v => v?.toLowerCase().includes(q));
     const matchSt = !st || l.leadStatus === st;
     const matchPa = !pa || l.preApprovalStatus === pa;
     return matchQ && matchSt && matchPa;
@@ -325,17 +369,17 @@ document.getElementById('export-csv-btn').addEventListener('click', () => {
     new Date(l.dateSubmitted).toLocaleString()
   ].map(v => `"${String(v).replace(/"/g,'""')}"`));
 
-  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const csv  = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
   const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = Object.assign(document.createElement('a'), {
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), {
     href: url, download: `umsteadgrove_leads_${new Date().toISOString().slice(0,10)}.csv`
   });
   a.click(); URL.revokeObjectURL(url);
   showToast(`✅ Exported ${leads.length} lead(s) to CSV.`);
 });
 
-// ─── UTIL ────────────────────────────────────────────────────────────────────
+// ─── UTIL ─────────────────────────────────────────────────────────────────────
 function esc(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
@@ -346,8 +390,10 @@ function showToast(msg, type='success') {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.className=''; }, 4500);
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+// ─── START ────────────────────────────────────────────────────────────────────
+getPassword(); // prompt for password immediately on page load
 fetchLeads();
 </script>
 </body>
 </html>
+
