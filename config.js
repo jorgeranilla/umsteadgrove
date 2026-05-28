@@ -21,8 +21,8 @@ const SITE_CONFIG = {
     zip:          "27712",
     price:        "$531,330",
     priceShort:   "$531.3K",
-    sellerConcession: "$10,000 toward buyer's closing costs",
-    beds:         "5",
+    sellerConcession: "Seller-paid concessions available — call owner for details",
+    beds:         "4",
     baths:        "3",
     sqft:         "2,670",
     lotSize:      "Fenced",
@@ -89,7 +89,7 @@ const SITE_CONFIG = {
     subject: {
       label: "This home",
       price: "$531,330",
-      beds: "5",
+      beds: "4",
       baths: "3",
       sqft: "2,670",
       pricePerSqft: "$199",
@@ -134,8 +134,8 @@ const SITE_CONFIG = {
   },
 
   sellerConcession: {
-    offer:  "$10,000 toward buyer's closing costs",
-    detail: "Seller is offering $10,000 toward the buyer's closing costs, making it easier to get into this home with less out-of-pocket at settlement. Ask for details when submitting your inquiry.",
+    offer:  "Seller-paid concessions available!",
+    detail: "Seller is offering concessions to help reduce what you bring to the table at closing. Call owner directly for details.",
   },
 
   // ─── GALLERY ─────────────────────────────────────────────────────────────────
@@ -193,7 +193,7 @@ const SITE_CONFIG = {
   faq: [
     {
       q: "Is the seller offering closing cost assistance?",
-      a: "The seller is including $10,000 toward the buyer's closing costs as part of the purchase agreement — a straightforward way to reduce what you bring to the table at closing."
+      a: "Yes — the seller is offering concessions to help reduce what you bring to the table at closing. Call owner directly for details: 864-625-6743."
     },
     {
       q: "Can I work with a buyer's agent?",
@@ -252,7 +252,7 @@ const SITE_CONFIG = {
   // ─── SITE META ───────────────────────────────────────────────────────────────
   site: {
     title:       "Umstead Grove | $531,330 | Durham, NC | For Sale By Owner",
-    description: "Move-in ready home for sale by owner in Durham, NC. Seller offering $10,000 toward closing costs. Features include spray foam insulation, functional laundry with utility sink, remote-control ceiling fans, under-cabinet LED lighting, home gym, finished garage, screened patio, and vinyl privacy fence. Request a showing today.",
+    description: "Move-in ready home for sale by owner in Durham, NC. Seller-paid concessions available — call owner for details. Features include spray foam insulation, functional laundry with utility sink, remote-control ceiling fans, under-cabinet LED lighting, home gym, finished garage, screened patio, and vinyl privacy fence. Request a showing today.",
     url:         "https://umsteadgrove.com",
     ogImage:     "https://umsteadgrove.com/images/exterior-front.jpg",
     themeColor:  "#1a3a2e",
