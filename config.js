@@ -2,12 +2,12 @@
  * UMSTEAD GROVE FSBO — SITE CONFIGURATION
  * =========================================
  * Edit this file to update property details, seller contact info,
- * and site copy across all pages without touching HTML or backend code.
+ * and site copy across the static page.
  *
  * Instructions:
  *  1. Fill in all [PLACEHOLDER] values before going live.
  *  2. Replace the photo paths with your actual property photos.
- *  3. Set SELLER_EMAIL to your real email address.
+ *  3. Set seller contact details.
  *  4. Adjust PROPERTY details to match your home's actual specs.
  */
 
@@ -21,8 +21,8 @@ const SITE_CONFIG = {
     zip:          "27712",
     price:        "$531,330",
     priceShort:   "$531.3K",
-    sellerConcession: "Seller-paid concessions available — call owner for details",
-    beds:         "4",
+    sellerConcession: "$10,000 toward buyer's closing costs",
+    beds:         "5",
     baths:        "3",
     sqft:         "2,670",
     lotSize:      "Fenced",
@@ -89,7 +89,7 @@ const SITE_CONFIG = {
     subject: {
       label: "This home",
       price: "$531,330",
-      beds: "4",
+      beds: "5",
       baths: "3",
       sqft: "2,670",
       pricePerSqft: "$199",
@@ -134,8 +134,8 @@ const SITE_CONFIG = {
   },
 
   sellerConcession: {
-    offer:  "Seller-paid concessions available!",
-    detail: "Seller is offering concessions to help reduce what you bring to the table at closing. Call owner directly for details.",
+    offer:  "$10,000 toward buyer's closing costs",
+    detail: "Seller is offering $10,000 toward the buyer's closing costs, making it easier to get into this home with less out-of-pocket at settlement. Ask for details when submitting your inquiry.",
   },
 
   // ─── GALLERY ─────────────────────────────────────────────────────────────────
@@ -193,7 +193,7 @@ const SITE_CONFIG = {
   faq: [
     {
       q: "Is the seller offering closing cost assistance?",
-      a: "Yes — the seller is offering concessions to help reduce what you bring to the table at closing. Call owner directly for details: 864-625-6743."
+      a: "The seller is including $10,000 toward the buyer's closing costs as part of the purchase agreement — a straightforward way to reduce what you bring to the table at closing."
     },
     {
       q: "Can I work with a buyer's agent?",
@@ -213,7 +213,7 @@ const SITE_CONFIG = {
     },
     {
       q: "Can I request a showing?",
-      a: "Absolutely. Use the form on this page to request a showing and the seller will confirm available times within 24 hours."
+      a: "Absolutely. Call or text Jorge directly at 864-625-6743 and the seller will confirm available times within 24 hours."
     },
     {
       q: "Do I need to be pre-approved to tour?",
@@ -244,15 +244,15 @@ const SITE_CONFIG = {
   // ─── SELLER / CONTACT ────────────────────────────────────────────────────────
   seller: {
     name:           "Jorge Ranilla",
-    email:          "jorgeranilla@gmail.com",       // ← THIS IS USED IN ALL EMAILS
+    email:          "jorgeranilla@gmail.com",
     phone:          "864-625-6743",
-    preferredContact: "email",                  // "email" or "phone"
+    preferredContact: "phone",
   },
 
   // ─── SITE META ───────────────────────────────────────────────────────────────
   site: {
     title:       "Umstead Grove | $531,330 | Durham, NC | For Sale By Owner",
-    description: "Move-in ready home for sale by owner in Durham, NC. Seller-paid concessions available — call owner for details. Features include spray foam insulation, functional laundry with utility sink, remote-control ceiling fans, under-cabinet LED lighting, home gym, finished garage, screened patio, and vinyl privacy fence. Request a showing today.",
+    description: "Move-in ready home for sale by owner in Durham, NC. Seller offering $10,000 toward closing costs. Features include spray foam insulation, functional laundry with utility sink, remote-control ceiling fans, under-cabinet LED lighting, home gym, finished garage, screened patio, and vinyl privacy fence. Call or text the seller to request a showing.",
     url:         "https://umsteadgrove.com",
     ogImage:     "https://umsteadgrove.com/images/exterior-front.jpg",
     themeColor:  "#1a3a2e",

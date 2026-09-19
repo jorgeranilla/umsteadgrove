@@ -11,7 +11,8 @@
   }[ch]));
 
   // Meta
-  document.getElementById('meta-title').textContent = C.site.title;
+  const titleEl = document.getElementById('meta-title') || document.querySelector('title');
+  if (titleEl) titleEl.textContent = C.site.title;
   document.getElementById('meta-desc').setAttribute('content', C.site.description);
   document.getElementById('og-title').setAttribute('content', C.site.title);
   document.getElementById('og-image').setAttribute('content', C.site.ogImage);
@@ -36,8 +37,12 @@
 
 
   // Seller contact sidebar
-  document.getElementById('seller-email-display').textContent = C.seller.email;
-  document.getElementById('seller-email-link').href = `mailto:${C.seller.email}`;
+  const emailDisplayEl = document.getElementById('seller-email-display');
+  const emailLinkEl = document.getElementById('seller-email-link');
+  if (emailDisplayEl && emailLinkEl && C.seller.email) {
+    emailDisplayEl.textContent = C.seller.email;
+    emailLinkEl.href = `mailto:${C.seller.email}`;
+  }
   const nameEl = document.getElementById('seller-name-display');
   if (nameEl) nameEl.textContent = C.seller.name;
   const phoneDisplayEl = document.getElementById('seller-phone-display');
@@ -288,137 +293,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
   if (e.key === 'ArrowLeft') navLightbox(-1);
   if (e.key === 'ArrowRight') navLightbox(1);
-});
-
-/* ─── FILE UPLOAD ───────────────────────────────────────────────────────────── */
-const uploadZone = document.getElementById('upload-zone');
-const fileInput = document.getElementById('f-upload');
-const fileNameEl = document.getElementById('upload-file-name');
-const MAX_SIZE = 10 * 1024 * 1024;
-const ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
-
-uploadZone.addEventListener('click', () => fileInput.click());
-uploadZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fileInput.click(); });
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault();
-  uploadZone.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file) validateAndSetFile(file);
-});
-fileInput.addEventListener('change', () => {
-  if (fileInput.files[0]) validateAndSetFile(fileInput.files[0]);
-});
-
-function validateAndSetFile(file) {
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    showToast('Only PDF, JPG, or PNG files are accepted.', 'error');
-    fileInput.value = '';
-    fileNameEl.textContent = '';
-    return;
-  }
-  if (file.size > MAX_SIZE) {
-    showToast('File is too large. Maximum size is 10 MB.', 'error');
-    fileInput.value = '';
-    fileNameEl.textContent = '';
-    return;
-  }
-  fileNameEl.textContent = `✓ ${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
-}
-
-/* ─── FORM VALIDATION & SUBMISSION ─────────────────────────────────────────── */
-const form = document.getElementById('buyer-form');
-
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  if (!validateForm()) return;
-
-  const submitBtn = document.getElementById('submit-btn');
-  const submitLabel = document.getElementById('submit-label');
-  submitBtn.disabled = true;
-  submitLabel.innerHTML = '<span class="spinner"></span>';
-
-  // Analytics event
-  gtag_event('form_submit', { event_category: 'lead', event_label: 'buyer_registration' });
-
-  try {
-    const data = buildFormData();
-    const res = await fetch('/api/umsteadgrove/submit', {
-      method: 'POST',
-      body: data,
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(json.error || 'Submission failed.');
-
-    form.reset();
-    fileNameEl.textContent = '';
-    document.getElementById('success-banner').classList.add('show');
-    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    showToast('✅ Submission received! Check your email.');
-  } catch (err) {
-    showToast(err.message || 'Something went wrong. Please try again or email directly.', 'error');
-  } finally {
-    submitBtn.disabled = false;
-    submitLabel.textContent = 'Submit Buyer Information';
-  }
-});
-
-function buildFormData() {
-  const fd = new FormData();
-  const fields = ['fullName','email','phone','contactPreference','preApprovalStatus',
-    'lenderName','budget','hasBuyerAgent','agentName','agentContact',
-    'showingDateTime','message','consentUpdates','ackNoContract','ackNoSensitive','ackPrivacy'];
-  fields.forEach(f => {
-    const el = form.elements[f];
-    if (!el) return;
-    if (el.type === 'checkbox') fd.append(f, el.checked ? 'true' : 'false');
-    else fd.append(f, el.value);
-  });
-  const file = fileInput.files[0];
-  if (file) fd.append('preApprovalFile', file);
-  return fd;
-}
-
-function validateForm() {
-  let ok = true;
-  const required = ['f-name','f-email','f-phone','f-contact-pref','f-preapproved','f-agent'];
-  required.forEach(id => {
-    const el = document.getElementById(id);
-    const errId = { 'f-name': 'err-name', 'f-email': 'err-email', 'f-phone': 'err-phone' }[id];
-    if (!el.value.trim()) {
-      el.classList.add('error');
-      if (errId) document.getElementById(errId)?.classList.add('show');
-      ok = false;
-    } else {
-      el.classList.remove('error');
-      if (errId) document.getElementById(errId)?.classList.remove('show');
-    }
-  });
-  // Email format
-  const emailEl = document.getElementById('f-email');
-  if (emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
-    emailEl.classList.add('error');
-    document.getElementById('err-email').classList.add('show');
-    ok = false;
-  }
-  // Required checkboxes
-  const reqChecks = ['chk-no-contract','chk-no-sensitive','chk-privacy'];
-  const allChecked = reqChecks.every(id => document.getElementById(id).checked);
-  if (!allChecked) {
-    document.getElementById('err-checkboxes').classList.add('show');
-    ok = false;
-  } else {
-    document.getElementById('err-checkboxes').classList.remove('show');
-  }
-  return ok;
-}
-
-// Clear error on input
-['f-name','f-email','f-phone'].forEach(id => {
-  document.getElementById(id)?.addEventListener('input', () => {
-    document.getElementById(id).classList.remove('error');
-  });
 });
 
 /* ─── ANALYTICS HELPERS ─────────────────────────────────────────────────────── */
